@@ -23,12 +23,13 @@ public class GameController1 : MonoBehaviour
     private float startTimeOfAnimation; //程序开始时间
     private float timeStep = 0.05f;
     private float oneStepValue = 0.01f;
-
+    private WWW www;
+    
     private void Start()
     {
         loadingBarSlider.gameObject.SetActive(true);
         string url = String.Format(modelNameFormat, modelName[0]);
-        WWW www = new WWW(url);
+        www = new WWW(url);
         StartCoroutine(showProgressAndLoadModel(www));
     }
 
@@ -84,8 +85,6 @@ public class GameController1 : MonoBehaviour
             }
         }
         
-        Debug.Log(www.assetBundle);
-        Debug.Log(www.assetBundle.mainAsset);
         GameObject model = Instantiate(www.assetBundle.mainAsset) as GameObject;
         //模型添加至modelDictionary
         displayModel(model, Vector3.forward); //显示网络模型
@@ -139,7 +138,9 @@ public class GameController1 : MonoBehaviour
         foreach (var assetBundle in AssetBundle.GetAllLoadedAssetBundles())
         {
           Debug.Log(assetBundle.name);   
+//            AssetBundle.Destroy(assetBundle);
         }
+        www.Reset();
         hideAllModel(); //隐藏所有的动画
         hideLoadingAnimation(); //隐藏加载动画
     }
