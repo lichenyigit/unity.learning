@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 using Ping = UnityEngine.Ping;
 
@@ -86,6 +88,7 @@ public class GameController1 : MonoBehaviour
         }
         
         GameObject model = Instantiate(www.assetBundle.mainAsset) as GameObject;
+        www.assetBundle.Unload(false);
         //模型添加至modelDictionary
         displayModel(model, Vector3.forward); //显示网络模型
     }
@@ -125,22 +128,16 @@ public class GameController1 : MonoBehaviour
     /// </summary>
     private void hideAllModel()
     {
-//        foreach (GameObject model in modelOfIndexDictionary.Values)
-//        {
-//            model.SetActive(false);
-//        }
-        Destroy(transform.GetChild(0).gameObject);
+        int counts = transform.childCount;
+        for (int i = 0;i < counts;i++)
+        {
+            Destroy(transform.GetChild(i).gameObject);    
+        }
         
     }
 
     public void destoryModel()
     {
-        foreach (var assetBundle in AssetBundle.GetAllLoadedAssetBundles())
-        {
-          Debug.Log(assetBundle.name);   
-//            AssetBundle.Destroy(assetBundle);
-        }
-        www.Reset();
         hideAllModel(); //隐藏所有的动画
         hideLoadingAnimation(); //隐藏加载动画
     }
