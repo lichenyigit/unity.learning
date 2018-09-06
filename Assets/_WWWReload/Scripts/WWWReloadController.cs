@@ -10,7 +10,7 @@ using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 using Ping = UnityEngine.Ping;
 
-public class GameController1 : MonoBehaviour
+public class WWWReloadController : MonoBehaviour
 {
     //模型网络地址
     private string modelNameFormat = "http://ftp.lichenyi.cn/model/{0}.assetbundle";
@@ -24,7 +24,7 @@ public class GameController1 : MonoBehaviour
     //模型集合
     private float startTimeOfAnimation; //程序开始时间
     private float timeStep = 0.05f;
-    private float oneStepValue = 0.01f;
+    private float oneStepValue = 0.03f;
     private WWW www;
     
     private void Start()
