@@ -15,15 +15,11 @@ public class DynamicClickController : MonoBehaviour
 		GameObject btnObj = GameObject.Find("Cube");  
 		Button btn = btnObj.GetComponent<Button>();
 		//注册按钮的点击事件
-		btn.onClick.AddListener(delegate() {
-			Btn_Test();
-			Debug.Log(00);
-		});
-		Debug.Log(11);
+//		btn.onClick.AddListener(() => Btn_Test());
 	}
 
 	//按钮点击事件的方法
-	void Btn_Test() 
+	public void Btn_Test() 
 	{
 		Debug.Log("这是一个按钮点击事件！哈哈");
 	}
