@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using MySql.Data;
 using MySql.Data.MySqlClient;
 using UnityEngine;
 using System.Data;
@@ -9,25 +10,14 @@ using Newtonsoft.Json;
 
 public class ConnectMySQL : MonoBehaviour
 {
-    /// <summary>
-    /// 批量操作每批次记录数
-    /// </summary>
-    public static int BatchSize = 2000;
-
-    /// <summary>
-    /// 超时时间
-    /// </summary>
-    public static int CommandTimeOut = 600;
     private string server = "gofbox.com";
     private string database = "arseeu";
     private string uid = "root2";
     private string password = "Xqm2328549@";
-    private string connstring;
     private MySqlConnection myConnection;
 
     void Start()
     {
-        connstring = string.Format("Server={0}; database={1}; UID={2}; password={3}", server, database, uid, password);
         /*insertFavorite("2");
         List<Dictionary<string, string>> result = queryFavoriteList("select * from favorite_list");
         foreach (Dictionary<string, string> row in result)
@@ -37,15 +27,31 @@ public class ConnectMySQL : MonoBehaviour
             Debug.Log(va);
         }*/
 
-        MySqlHelper mySqlHelper = new MySqlHelper(connstring);
-        MySqlParameter[] parameter = null;
-        DataRow result = mySqlHelper.ExecuteDataRow("select * from favorite_list", parameter);
-        Debug.Log(JsonConvert.SerializeObject(result));
+        Debug.Log("开始插入");
+        string insertSQL = "insert into test(id) values(@id)";
+        Dictionary<string, object> parameters = new Dictionary<string, object>();
+        parameters.Add("@id", 3);
+        MySqlHelper.insertOrUpdate(insertSQL, parameters);
+        Debug.Log("插入完毕");
+        
+        /*string querySQL = "select * from test where id = @id";
+        Dictionary<string, object> parameters1 = new Dictionary<string, object>();
+        parameters1.Add("@id", 1);*/
+        string querySQL = "select * from comment_info ";
+        List<Dictionary<string, string>> result = MySqlHelper.query(querySQL, null);
+        foreach (Dictionary<string, string> row in result)
+        {
+            string va;
+            row.TryGetValue("content", out va);
+            Debug.Log(va);
+        }
+        
+        
     }
 
     public List<Dictionary<string, string>> queryFavoriteList(string sql)
     {
-        using (myConnection = new MySqlConnection(connstring))
+        using (myConnection = new MySqlConnection(MySqlHelper.getConnectionStr()))
         {
             MySqlCommand myCommand = new MySqlCommand(sql, myConnection);
 
@@ -70,7 +76,7 @@ public class ConnectMySQL : MonoBehaviour
 
     public void insertFavorite(string value)
     {
-        using (myConnection = new MySqlConnection(connstring))
+        using (myConnection = new MySqlConnection(MySqlHelper.getConnectionStr()))
         {
             string sql = string.Format("insert into favorite_list(id) values('{0}')", value);
             MySqlCommand myCommand = new MySqlCommand(sql, myConnection);
@@ -104,7 +110,7 @@ public class ConnectMySQL : MonoBehaviour
         if (connection.State != ConnectionState.Open) connection.Open();
 
         command.Connection = connection;
-        command.CommandTimeout = CommandTimeOut;
+        command.CommandTimeout = 600;
         // 设置命令文本(存储过程名或SQL语句)
         command.CommandText = commandText;
         // 分配事务

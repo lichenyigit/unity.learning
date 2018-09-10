@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
-using Ping = UnityEngine.Ping;
 
 public class WWWReloadController : MonoBehaviour
 {
@@ -103,7 +97,11 @@ public class WWWReloadController : MonoBehaviour
         model.transform.localPosition = position;
         model.transform.localScale = new Vector3(1f, 1f, 1f);
         model.transform.parent = transform;
-        model.gameObject.AddComponent<ModelRotation>();
+        
+        addComponent<BoxCollider>(model);//添加collider
+        //addComponent<ModelRotation>(model);//模型转动
+        addComponent<CommentReplyController>(model);//添加留言UI
+        addComponent<CommentListController>(model);//显示留言列表
     }
 
     /// <summary>
@@ -141,4 +139,19 @@ public class WWWReloadController : MonoBehaviour
         hideAllModel(); //隐藏所有的动画
         hideLoadingAnimation(); //隐藏加载动画
     }
+
+    /// <summary>
+    /// 添加GameObject属性
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <typeparam name="T"></typeparam>
+    private void addComponent<T>(GameObject gameObject) where T : Component
+    {
+        T t = gameObject.GetComponent<T>();
+        if (t == null)
+        {
+            gameObject.AddComponent<T>();
+        }
+    }
+    
 }

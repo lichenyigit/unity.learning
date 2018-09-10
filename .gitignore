@@ -5,6 +5,7 @@
 *.apk
 *.sln
 *.csproj
+*.meta
 Library
 obj
 Packages
