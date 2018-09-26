@@ -127,6 +127,7 @@ public class WWWReloadController : MonoBehaviour
     private void hideAllModel()
     {
         int counts = transform.childCount;
+        Debug.Log(counts);
         for (int i = 0;i < counts;i++)
         {
             Destroy(transform.GetChild(i).gameObject);    

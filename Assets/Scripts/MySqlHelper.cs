@@ -70,6 +70,7 @@ namespace Helpers
                     {
                         row.Add(column, dataReader.GetString(column));
                     }
+
                     result.Add(row);
                 }
 
@@ -79,6 +80,37 @@ namespace Helpers
         }
 
         public static void insertOrUpdate(string sql, Dictionary<string, object> parameters)
+        {
+            using (MySqlConnection connection = new MySqlConnection(getConnectionStr()))
+            {
+                MySqlCommand command = new MySqlCommand(sql, connection);
+                connection.Open();
+                prepareCommand(command, connection, parameters);
+                MySqlTransaction transaction = connection.BeginTransaction();
+                command.Transaction = transaction;
+
+                try
+                {
+                    int x = command.ExecuteNonQuery();
+                    Debug.Log("执行结果：" + x);
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    Debug.Log(ex.StackTrace);
+                    try
+                    {
+                        transaction.Rollback();
+                    }
+                    catch (Exception en)
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public static void delete(string sql, Dictionary<string, object> parameters)
         {
             using (MySqlConnection connection = new MySqlConnection(getConnectionStr()))
             {
