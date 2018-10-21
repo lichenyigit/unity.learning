@@ -265,6 +265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 905413676}
   - component: {fileID: 905413677}
+  - component: {fileID: 905413678}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -298,6 +299,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingBarSlider: {fileID: 1658871268}
   modelPanel: {fileID: 1035579728}
+--- !u!114 &905413678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 905413675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52ace7c75a8d30546a148521a54f54f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1034338721
 Prefab:
   m_ObjectHideFlags: 0

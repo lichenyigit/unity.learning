@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Helpers;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,14 +24,29 @@ public class WWWReloadController : MonoBehaviour
     private float timeStep = 0.05f;
     private float oneStepValue = 0.03f;
     private WWW www;
+    private Vector3 scale;
+
+    private string url;
     
     private void Start()
     { 
-        loadingBarSlider.gameObject.SetActive(true);
+        /*loadingBarSlider.gameObject.SetActive(true);
         //string url = String.Format(modelNameFormat, modelName[0]);
         string url = "http://ftp.lichenyi.cn/model/Toilet.assetbundle";
         www = new WWW(url);
-        StartCoroutine(showProgressAndLoadModel(www));
+        StartCoroutine(showProgressAndLoadModel(www));*/
+        
+        Dictionary<string, string> result = getModelURLByImageName("picture_monalisa");
+        Debug.Log(JsonConvert.SerializeObject(result));
+        string url, scaleX, scaleY, scaleZ;
+        result.TryGetValue("url", out url);
+        result.TryGetValue("scale_x", out scaleX);
+        result.TryGetValue("scale_y", out scaleY);
+        result.TryGetValue("scale_z", out scaleZ);
+        scale = new Vector3(Convert.ToSingle(scaleX), Convert.ToSingle(scaleY), Convert.ToSingle(scaleZ));
+        Debug.Log(scale);
+        WWW www = new WWW(url);
+        StartCoroutine(showProgressAndLoadModel(www, scale));
     }
 
     private void Update()
@@ -41,9 +58,8 @@ public class WWWReloadController : MonoBehaviour
             
             //重新加载
             loadingBarSlider.gameObject.SetActive(true);
-            string url = String.Format(modelNameFormat, modelName[0]);
             WWW www = new WWW(url);
-            StartCoroutine(showProgressAndLoadModel(www));
+            StartCoroutine(showProgressAndLoadModel(www, scale));
         }
     }
 
@@ -53,28 +69,30 @@ public class WWWReloadController : MonoBehaviour
     /// </summary>
     /// <param name="www"></param>
     /// <returns></returns>
-    private IEnumerator showProgressAndLoadModel(WWW www)
+    private IEnumerator showProgressAndLoadModel(WWW www, Vector3 scale)
     {
         showLodingAnimation(); //显示加载动画
         startTimeOfAnimation = Time.time;
         //将动画进度条加载到0.8
-        while (!www.isDone || loadingBarSlider.value < 0.8)
+        while (!www.isDone && loadingBarSlider.value < 0.8)
         {
             if (Time.time - startTimeOfAnimation >= timeStep && loadingBarSlider.gameObject.active)
             {
                 loadingBarSlider.value += oneStepValue;
                 startTimeOfAnimation = Time.time;
             }
-            yield return new WaitForSeconds(0.1f);
+
+            yield return new WaitForEndOfFrame();
         }
 
-        while (www.progress.CompareTo(1f) == -1)
+        while (!www.isDone)
         {
-            Debug.Log((www.progress.CompareTo(1f) == -1)+"");
-            Debug.Log(www.progress);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForEndOfFrame();
         }
-        
+        Debug.Log(www.assetBundle.GetType());
+        GameObject model = Instantiate(www.assetBundle.mainAsset) as GameObject;
+        model.SetActive(false);
+        yield return new WaitForSeconds(2);
         if (www.isDone)
         {
             //将动画进度条加载到1
@@ -86,28 +104,25 @@ public class WWWReloadController : MonoBehaviour
                     startTimeOfAnimation = Time.time;
                 }
 
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForEndOfFrame();
             }
         }
-        Debug.Log(www.progress);
-        GameObject model = Instantiate(www.assetBundle.mainAsset) as GameObject;
+
         www.assetBundle.Unload(false);
-        www.Dispose();
-        //模型添加至modelDictionary
-        displayModel(model, Vector3.forward); //显示网络模型
+        displayModel(model, scale); //显示网络模型
     }
 
     /// <summary>
     /// 显示网络模型
     /// </summary>
-    private void displayModel(GameObject model, Vector3 position)
+    private void displayModel(GameObject model, Vector3 scale)
     {
         model.SetActive(true);
         hideLoadingAnimation(); //隐藏加载动画
         model.transform.position = Vector3.zero;
-//        model.transform.localScale = new Vector3(1f, 1f, 1f);
+        model.transform.localScale = scale;
         model.transform.parent = modelPanel.transform;
-        
+        //model.GetComponent<RectTransform>().pivot = new Vector2(0, 0);
         addComponent<BoxCollider>(model);//添加collider
         //addComponent<ModelRotation>(model);//模型转动
         addComponent<CommentReplyController>(model);//添加留言UI
@@ -163,6 +178,27 @@ public class WWWReloadController : MonoBehaviour
         {
             gameObject.AddComponent<T>();
         }
+    }
+    
+    private Dictionary<string, string> getModelURLByImageName(string imageName)
+    {
+        //string querySQL = "select model_url from image_upload_info where name = @name";
+        string querySQL = "select model_upload_info.* from model_upload_info WHERE model_upload_info.url = (SELECT model_url from image_upload_info WHERE image_upload_info.`name` = @name);";
+        Dictionary<string, object> parameters = new Dictionary<string, object>();
+        parameters.Add("@name", imageName);
+        Dictionary<string, string> result = new Dictionary<string, string>();
+        List<Dictionary<string, string>> queryResult = MySqlHelper.query(querySQL, parameters);
+        foreach (Dictionary<string, string> row in queryResult)
+        {
+            string modelUrl, id, scaleX, scaleY, scaleZ;
+            row.TryGetValue("url", out modelUrl);
+            row.TryGetValue("id", out id);
+
+            if (modelUrl != null)
+                return row;
+        }
+
+        return result;
     }
     
 }
