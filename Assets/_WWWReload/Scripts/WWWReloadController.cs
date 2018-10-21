@@ -15,6 +15,8 @@ public class WWWReloadController : MonoBehaviour
 
     public Slider loadingBarSlider;
 
+    public GameObject modelPanel;
+    
     //模型集合
     private float startTimeOfAnimation; //程序开始时间
     private float timeStep = 0.05f;
@@ -22,9 +24,10 @@ public class WWWReloadController : MonoBehaviour
     private WWW www;
     
     private void Start()
-    {
+    { 
         loadingBarSlider.gameObject.SetActive(true);
-        string url = String.Format(modelNameFormat, modelName[0]);
+        //string url = String.Format(modelNameFormat, modelName[0]);
+        string url = "http://ftp.lichenyi.cn/model/Toilet.assetbundle";
         www = new WWW(url);
         StartCoroutine(showProgressAndLoadModel(www));
     }
@@ -62,10 +65,16 @@ public class WWWReloadController : MonoBehaviour
                 loadingBarSlider.value += oneStepValue;
                 startTimeOfAnimation = Time.time;
             }
-
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(0.1f);
         }
 
+        while (www.progress.CompareTo(1f) == -1)
+        {
+            Debug.Log((www.progress.CompareTo(1f) == -1)+"");
+            Debug.Log(www.progress);
+            yield return new WaitForSeconds(0.1f);
+        }
+        
         if (www.isDone)
         {
             //将动画进度条加载到1
@@ -77,12 +86,13 @@ public class WWWReloadController : MonoBehaviour
                     startTimeOfAnimation = Time.time;
                 }
 
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForSeconds(0.1f);
             }
         }
-        
+        Debug.Log(www.progress);
         GameObject model = Instantiate(www.assetBundle.mainAsset) as GameObject;
         www.assetBundle.Unload(false);
+        www.Dispose();
         //模型添加至modelDictionary
         displayModel(model, Vector3.forward); //显示网络模型
     }
@@ -94,9 +104,9 @@ public class WWWReloadController : MonoBehaviour
     {
         model.SetActive(true);
         hideLoadingAnimation(); //隐藏加载动画
-        model.transform.localPosition = position;
-        model.transform.localScale = new Vector3(1f, 1f, 1f);
-        model.transform.parent = transform;
+        model.transform.position = Vector3.zero;
+//        model.transform.localScale = new Vector3(1f, 1f, 1f);
+        model.transform.parent = modelPanel.transform;
         
         addComponent<BoxCollider>(model);//添加collider
         //addComponent<ModelRotation>(model);//模型转动
