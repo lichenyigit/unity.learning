@@ -36,7 +36,11 @@ public class WWWReloadController : MonoBehaviour
         www = new WWW(url);
         StartCoroutine(showProgressAndLoadModel(www));*/
         
-        Dictionary<string, string> result = getModelURLByImageName("picture_monalisa");
+        string url = "http://ftp.lichenyi.cn/model/DetectedPlaneVisualizer.assetbundle";
+        www = new WWW(url);
+        StartCoroutine(showProgressAndLoadModel(www, Vector3.one));
+        
+        /*Dictionary<string, string> result = getModelURLByImageName("logo_adidas_black");
         Debug.Log(JsonConvert.SerializeObject(result));
         string url, scaleX, scaleY, scaleZ;
         result.TryGetValue("url", out url);
@@ -46,7 +50,7 @@ public class WWWReloadController : MonoBehaviour
         scale = new Vector3(Convert.ToSingle(scaleX), Convert.ToSingle(scaleY), Convert.ToSingle(scaleZ));
         Debug.Log(scale);
         WWW www = new WWW(url);
-        StartCoroutine(showProgressAndLoadModel(www, scale));
+        StartCoroutine(showProgressAndLoadModel(www, scale));*/
     }
 
     private void Update()
@@ -89,7 +93,6 @@ public class WWWReloadController : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-        Debug.Log(www.assetBundle.GetType());
         GameObject model = Instantiate(www.assetBundle.mainAsset) as GameObject;
         model.SetActive(false);
         yield return new WaitForSeconds(2);
@@ -125,8 +128,8 @@ public class WWWReloadController : MonoBehaviour
         //model.GetComponent<RectTransform>().pivot = new Vector2(0, 0);
         addComponent<BoxCollider>(model);//添加collider
         //addComponent<ModelRotation>(model);//模型转动
-        addComponent<CommentReplyController>(model);//添加留言UI
-        addComponent<CommentListController>(model);//显示留言列表
+        //addComponent<CommentReplyController>(model);//添加留言UI
+       // addComponent<CommentListController>(model);//显示留言列表
     }
 
     /// <summary>

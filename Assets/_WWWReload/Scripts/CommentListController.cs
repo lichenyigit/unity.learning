@@ -92,5 +92,9 @@ public class CommentListController : MonoBehaviour
             }
         }
     }
+    
+    public void bb(){
+        Debug.Log(222);
+    }
 
 }

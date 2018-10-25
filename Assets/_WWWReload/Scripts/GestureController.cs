@@ -45,4 +45,10 @@ public class GestureController : MonoBehaviour
             touchFirst = touchSecond;
         }
     }
+
+    public void bb()
+    {
+        Debug.Log(222);
+    }
+    
 }
