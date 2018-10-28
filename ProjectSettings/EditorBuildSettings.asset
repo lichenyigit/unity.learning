@@ -14,13 +14,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_DynamicClick/Scenes/DynamicClick.unity
     guid: 7be528fde5f81c944aff12c557f78b29
-  - enabled: 0
+  - enabled: 1
     path: Assets/_WWWReload/Scenes/WWWReload.unity
     guid: d1b9f5f16bf015a49a99e48068c17f6d
   - enabled: 0
     path: Assets/_TouchMove/Scenes/TouchMove.unity
     guid: 045950b0592e172429d40b50154191f8
-  - enabled: 1
+  - enabled: 0
     path: Assets/_ModelRotateAndEnlarge/Scene/ModelRotateAndEnlarge.unity
     guid: 0f0c8fa4e9af55946ae3bca0e7e9a02c
   m_configObjects: {}

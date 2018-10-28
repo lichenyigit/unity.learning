@@ -36,7 +36,7 @@ public class WWWReloadController : MonoBehaviour
         www = new WWW(url);
         StartCoroutine(showProgressAndLoadModel(www));*/
         
-        string url = "http://ftp.lichenyi.cn/model/DetectedPlaneVisualizer.assetbundle";
+        string url = "http://ftp.lichenyi.cn/model/Monalisa.assetbundle";
         www = new WWW(url);
         StartCoroutine(showProgressAndLoadModel(www, Vector3.one));
         
@@ -124,7 +124,8 @@ public class WWWReloadController : MonoBehaviour
         hideLoadingAnimation(); //隐藏加载动画
         model.transform.position = Vector3.zero;
         model.transform.localScale = scale;
-        model.transform.parent = modelPanel.transform;
+        model.transform.parent = transform;
+        //model.transform.parent = modelPanel.transform;
         //model.GetComponent<RectTransform>().pivot = new Vector2(0, 0);
         addComponent<BoxCollider>(model);//添加collider
         //addComponent<ModelRotation>(model);//模型转动
