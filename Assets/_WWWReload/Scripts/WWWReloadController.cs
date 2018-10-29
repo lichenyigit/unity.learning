@@ -36,7 +36,7 @@ public class WWWReloadController : MonoBehaviour
         www = new WWW(url);
         StartCoroutine(showProgressAndLoadModel(www));*/
         
-        string url = "http://ftp.lichenyi.cn/model/Monalisa.assetbundle";
+        string url = "http://ftp.lichenyi.cn/model/DicosCup.assetbundle";
         www = new WWW(url);
         StartCoroutine(showProgressAndLoadModel(www, Vector3.one));
         
