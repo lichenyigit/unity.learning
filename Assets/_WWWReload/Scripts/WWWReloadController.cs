@@ -8,62 +8,60 @@ using UnityEngine.UI;
 
 public class WWWReloadController : MonoBehaviour
 {
-    //模型网络地址
-    private string modelNameFormat = "http://ftp.lichenyi.cn/model/{0}.assetbundle";
-
     //模型名称
-    private string[] modelName = {"001", "002"};
     private Dictionary<int, GameObject> modelOfIndexDictionary = new Dictionary<int, GameObject>();
 
     public Slider loadingBarSlider;
 
-    public GameObject modelPanel;
-    
     //模型集合
     private float startTimeOfAnimation; //程序开始时间
     private float timeStep = 0.05f;
     private float oneStepValue = 0.03f;
-    private WWW www;
     private Vector3 scale;
+    List<Coroutine> coroutineList = new List<Coroutine>();
+    private string url = "http://ftp.lichenyi.cn/model/AudiR8.assetbundle";
 
-    private string url;
+    private void addCoroutineList(Coroutine coroutine)
+    {
+        Debug.Log(coroutine);
+        coroutineList.Add(coroutine);
+    }
+    
     
     private void Start()
     { 
-        /*loadingBarSlider.gameObject.SetActive(true);
-        //string url = String.Format(modelNameFormat, modelName[0]);
-        string url = "http://ftp.lichenyi.cn/model/Toilet.assetbundle";
-        www = new WWW(url);
-        StartCoroutine(showProgressAndLoadModel(www));*/
+        //loadingBarSlider.gameObject.SetActive(true);
+        //string url = "http://ftp.lichenyi.cn/model/Toilet.assetbundle";
+        //www = new WWW(url);
+        //StartCoroutine(showProgressAndLoadModel(www));
         
-        string url = "http://ftp.lichenyi.cn/model/DicosCup.assetbundle";
-        www = new WWW(url);
+        WWW www = new WWW(url);
         StartCoroutine(showProgressAndLoadModel(www, Vector3.one));
         
-        /*Dictionary<string, string> result = getModelURLByImageName("logo_adidas_black");
-        Debug.Log(JsonConvert.SerializeObject(result));
-        string url, scaleX, scaleY, scaleZ;
-        result.TryGetValue("url", out url);
-        result.TryGetValue("scale_x", out scaleX);
-        result.TryGetValue("scale_y", out scaleY);
-        result.TryGetValue("scale_z", out scaleZ);
-        scale = new Vector3(Convert.ToSingle(scaleX), Convert.ToSingle(scaleY), Convert.ToSingle(scaleZ));
-        Debug.Log(scale);
-        WWW www = new WWW(url);
-        StartCoroutine(showProgressAndLoadModel(www, scale));*/
+        //Dictionary<string, string> result = getModelURLByImageName("logo_adidas_black");
+        //Debug.Log(JsonConvert.SerializeObject(result));
+        //string url, scaleX, scaleY, scaleZ;
+        //result.TryGetValue("url", out url);
+        //result.TryGetValue("scale_x", out scaleX);
+        //result.TryGetValue("scale_y", out scaleY);
+        //result.TryGetValue("scale_z", out scaleZ);
+        //scale = new Vector3(Convert.ToSingle(scaleX), Convert.ToSingle(scaleY), Convert.ToSingle(scaleZ));
+        //Debug.Log(scale);
+        //WWW www = new WWW(url);
+        //StartCoroutine(showProgressAndLoadModel(www, scale));
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("重新加载");
-            destoryModel();
             
+            destoryModel();
+            Debug.Log("重新加载");
             //重新加载
             loadingBarSlider.gameObject.SetActive(true);
             WWW www = new WWW(url);
-            StartCoroutine(showProgressAndLoadModel(www, scale));
+            addCoroutineList(StartCoroutine(showProgressAndLoadModel(www, scale)));
         }
     }
 
@@ -91,9 +89,11 @@ public class WWWReloadController : MonoBehaviour
 
         while (!www.isDone)
         {
+            Debug.Log("加载" + www.progress);
             yield return new WaitForEndOfFrame();
         }
         GameObject model = Instantiate(www.assetBundle.mainAsset) as GameObject;
+        Debug.Log(model.name);
         model.SetActive(false);
         yield return new WaitForSeconds(2);
         if (www.isDone)
@@ -120,6 +120,7 @@ public class WWWReloadController : MonoBehaviour
     /// </summary>
     private void displayModel(GameObject model, Vector3 scale)
     {
+        StopCoroutine("showProgressAndLoadModel");
         model.SetActive(true);
         hideLoadingAnimation(); //隐藏加载动画
         model.transform.position = Vector3.zero;
@@ -166,6 +167,16 @@ public class WWWReloadController : MonoBehaviour
 
     public void destoryModel()
     {
+        Debug.Log("终止");
+        if (coroutineList != null && coroutineList.Count > 0)
+        {
+            foreach (Coroutine coroutine in coroutineList)
+            {
+                StopCoroutine(coroutine);
+            }
+        }
+
+        Debug.Log("终止成功\r\n重新加载");
         hideAllModel(); //隐藏所有的动画
         hideLoadingAnimation(); //隐藏加载动画
     }
@@ -186,7 +197,6 @@ public class WWWReloadController : MonoBehaviour
     
     private Dictionary<string, string> getModelURLByImageName(string imageName)
     {
-        //string querySQL = "select model_url from image_upload_info where name = @name";
         string querySQL = "select model_upload_info.* from model_upload_info WHERE model_upload_info.url = (SELECT model_url from image_upload_info WHERE image_upload_info.`name` = @name);";
         Dictionary<string, object> parameters = new Dictionary<string, object>();
         parameters.Add("@name", imageName);
@@ -204,5 +214,4 @@ public class WWWReloadController : MonoBehaviour
 
         return result;
     }
-    
 }

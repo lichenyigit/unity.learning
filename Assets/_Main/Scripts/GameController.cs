@@ -34,10 +34,10 @@ public class GameController : MonoBehaviour
         loadingBarSlider.gameObject.SetActive(true);
         string url = String.Format(modelNameFormat, modelName[0]);
         WWW www = new WWW(url);
-        StartCoroutine(showProgressAndLoadModel(www));
+        StartCoroutine(showProgressAndLoadModel1(www));
     }
 
-    private IEnumerator showProgressAndLoadModel(WWW www)
+    private IEnumerator showProgressAndLoadModel1(WWW www)
     {
         startTime = Time.time;
         while (!www.isDone || loadingBarSlider.value < 0.8)
