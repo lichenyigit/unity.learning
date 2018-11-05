@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class TouchDragAndRotate : MonoBehaviour
 {
     private Plane objPlane;
-    private Vector3 m0;
+    private Vector3 offsetPos;
 
     void Update()
     {
@@ -28,14 +28,14 @@ public class TouchDragAndRotate : MonoBehaviour
                             mRay = Camera.main.ScreenPointToRay(touch.position);
 
                             objPlane.Raycast(mRay, out rayDistance);
-                            m0 = gameObject.transform.position - mRay.GetPoint(rayDistance);
+                            offsetPos = gameObject.transform.position - mRay.GetPoint(rayDistance);
                             break;
 
                         case TouchPhase.Moved:
                             mRay = Camera.main.ScreenPointToRay(touch.position);
                             if (objPlane.Raycast(mRay, out rayDistance))
                             {
-                                gameObject.transform.position = mRay.GetPoint(rayDistance) + m0;
+                                gameObject.transform.position = mRay.GetPoint(rayDistance) + offsetPos;
                             }
 
                             break;
