@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -9,10 +10,15 @@ public class ReplaceImageController : MonoBehaviour
 {
     public Image image;
 
-    private string imageURL = "http://ftp.lichenyi.cn/img/logo_audi.png";
-    
+    private string imageURL = "http://ftp.lichenyi.cn/img/picture_monalisa.jpg";
+
+    private float imageRectHeight;
+    private float imageRectWidth;
+
     void Start()
     {
+        imageRectHeight = image.GetComponent<RectTransform>().rect.height;
+        imageRectWidth = image.GetComponent<RectTransform>().rect.width;
     }
 
     public void changeScene()
@@ -33,37 +39,47 @@ public class ReplaceImageController : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
+
+        dengbili(www.texture.width, www.texture.height);
         image.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
+        //image.SetNativeSize();
+//        image.GetComponent<RectTransform>().rect.height = wh.x;
+        //      image.GetComponent<RectTransform>().w = wh.y;
         Debug.Log("success");
     }
-    
-    private void LoadByIO()
+
+    private void dengbili(float width, float height)
     {
-        double startTime = (double)Time.time;
-        //创建文件读取流
-        FileStream fileStream = new FileStream(imageURL, FileMode.Open, FileAccess.Read);
-        fileStream.Seek(0, SeekOrigin.Begin);
-        //创建文件长度缓冲区
-        byte[] bytes = new byte[fileStream.Length];
-        //读取文件
-        fileStream.Read(bytes, 0, (int)fileStream.Length);
-        //释放文件读取流
-        fileStream.Close();
-        fileStream.Dispose();
-        fileStream = null;
-
-        //创建Texture
-        int width = 300;
-        int height = 372;
-        Texture2D texture = new Texture2D(width, height);
-        texture.LoadImage(bytes);
-
-        //创建Sprite
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-        image.sprite = sprite;
-
-        startTime=(double)Time.time-startTime;
-        Debug.Log("IO加载用时:" + startTime);
+        /*if (width < height)
+        {
+            image.transform.localScale = new Vector3(width/height, 1, 1);
+        }else if (width > height)
+        {
+            image.transform.localScale = new Vector3(1, height/width, 1);
+        }*/
+        //如果图片实际大小比image小
+        if (width < imageRectWidth || height < imageRectHeight)
+        {
+            if (width < height)
+            {
+                image.transform.localScale = new Vector3(width / height, 1, 1);
+            }
+            else if (width > height)
+            {
+                image.transform.localScale = new Vector3(1, height / width, 1);
+            }
+        }
+        else if (width > imageRectWidth || height > imageRectHeight) //图片实际大小比image大
+        {
+            Debug.Log(1);
+            if (Mathf.Abs(imageRectWidth - width) < Mathf.Abs(imageRectHeight - height))
+            {
+                image.transform.localScale = new Vector3(imageRectWidth * width / height, 1, 1);
+            }
+            else if (Mathf.Abs(imageRectWidth - width) > Mathf.Abs(imageRectHeight - height))
+            {
+                image.transform.localScale = new Vector3(1, imageRectHeight * height / width, 1);
+            }
+        }
     }
-    
 }

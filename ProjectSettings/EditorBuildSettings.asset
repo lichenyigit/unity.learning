@@ -5,28 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/_Main/Scenes/Main.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
-    path: Assets/_ReplaceImage/Scenes/ReplaceImage.unity
-    guid: c5b1c3e012c054a42935aa7a53616668
-  - enabled: 0
-    path: Assets/_DynamicClick/Scenes/DynamicClick.unity
-    guid: 7be528fde5f81c944aff12c557f78b29
-  - enabled: 0
-    path: Assets/_WWWReload/Scenes/WWWReload.unity
-    guid: d1b9f5f16bf015a49a99e48068c17f6d
-  - enabled: 0
-    path: Assets/_TouchMove/Scenes/TouchMove.unity
-    guid: 045950b0592e172429d40b50154191f8
-  - enabled: 0
-    path: Assets/_ModelRotateAndEnlarge/Scene/ModelRotateAndEnlarge.unity
-    guid: 0f0c8fa4e9af55946ae3bca0e7e9a02c
-  - enabled: 0
-    path: Assets/_TouchDrag/Scenes/TouchDrag.unity
-    guid: 35fb9079b4a71604e8c7361acf4f4a95
   - enabled: 1
-    path: Assets/_TouchDragAndRotate/Scenes/TouchDragAndRotate.unity
-    guid: 4f62edc6d2f815848be661ccc32f3777
+    path: Assets/_OpenURL/Scenes/OpenURL.unity
+    guid: 512d3b35c53813341be939337b12bdf2
   m_configObjects: {}

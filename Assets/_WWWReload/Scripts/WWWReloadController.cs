@@ -19,7 +19,7 @@ public class WWWReloadController : MonoBehaviour
     private float oneStepValue = 0.03f;
     private Vector3 scale;
     List<Coroutine> coroutineList = new List<Coroutine>();
-    private string url = "http://ftp.lichenyi.cn/model/AudiR8.assetbundle";
+    private string url = "http://ftp.lichenyi.cn/model/House.assetbundle";
 
     private void addCoroutineList(Coroutine coroutine)
     {
