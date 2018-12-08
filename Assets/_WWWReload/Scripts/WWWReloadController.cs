@@ -19,7 +19,7 @@ public class WWWReloadController : MonoBehaviour
     private float oneStepValue = 0.03f;
     private Vector3 scale;
     List<Coroutine> coroutineList = new List<Coroutine>();
-    private string url = "http://ftp.lichenyi.cn/model/House.assetbundle";
+    private string url = "http://cdn.lichenyi.cn/model/House.assetbundle";
 
     private void addCoroutineList(Coroutine coroutine)
     {
@@ -36,7 +36,7 @@ public class WWWReloadController : MonoBehaviour
         //StartCoroutine(showProgressAndLoadModel(www));
         
         WWW www = new WWW(url);
-        StartCoroutine(showProgressAndLoadModel(www, Vector3.one));
+        StartCoroutine(showProgressAndLoadModel1(www, Vector3.one));
         
         //Dictionary<string, string> result = getModelURLByImageName("logo_adidas_black");
         //Debug.Log(JsonConvert.SerializeObject(result));
@@ -92,6 +92,10 @@ public class WWWReloadController : MonoBehaviour
             Debug.Log("加载" + www.progress);
             yield return new WaitForEndOfFrame();
         }
+        
+        //AssetBundleRequest req = www.assetBundle.LoadAsync("", typeof(GameObject));
+        AssetBundleRequest req = www.assetBundle.LoadAssetAsync("House");
+        
         GameObject model = Instantiate(www.assetBundle.mainAsset) as GameObject;
         Debug.Log(model.name);
         model.SetActive(false);
@@ -113,6 +117,22 @@ public class WWWReloadController : MonoBehaviour
 
         www.assetBundle.Unload(false);
         displayModel(model, scale); //显示网络模型
+    }
+    
+    private IEnumerator showProgressAndLoadModel1(WWW www, Vector3 scale)
+    {
+        while (!www.isDone)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        
+        //AssetBundleRequest req = www.assetBundle.LoadAsync("", typeof(GameObject));
+        //AssetBundleRequest req = www.assetBundle.LoadAssetAsync("House");
+
+        /*GameObject model = www.assetBundle.mainAsset as GameObject;
+        Debug.Log(model);*/
+        www.assetBundle.Unload(false);
+        //displayModel(model, scale); //显示网络模型
     }
 
     /// <summary>
