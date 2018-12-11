@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -28,7 +29,8 @@ public class ReplaceImageController : MonoBehaviour
 
     public void changeBackground()
     {
-        StartCoroutine(loadImage());
+        //StartCoroutine(loadImage());
+        StartCoroutine(GetText());
 //        LoadByIO();
     }
 
@@ -46,6 +48,25 @@ public class ReplaceImageController : MonoBehaviour
 //        image.GetComponent<RectTransform>().rect.height = wh.x;
         //      image.GetComponent<RectTransform>().w = wh.y;
         Debug.Log("success");
+    }
+    
+    IEnumerator GetText()
+    {
+        using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(imageURL))
+        {
+            yield return uwr.SendWebRequest();
+
+            if (uwr.isNetworkError || uwr.isHttpError)
+            {
+                Debug.Log(uwr.error);
+            }
+            else
+            {
+                // Get downloaded asset bundle
+                var texture = DownloadHandlerTexture.GetContent(uwr);
+                image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
+            }
+        }
     }
 
     private void dengbili(float width, float height)
