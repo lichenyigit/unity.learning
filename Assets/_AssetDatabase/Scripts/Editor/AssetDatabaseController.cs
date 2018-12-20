@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AssetDatabaseController : MonoBehaviour {
 
-	[MenuItem("AssetBundle/Test")]
+	//[MenuItem("AssetBundle/Test")]
 	static void doit()
 	{
 		/*string t = AssetDatabase.GetAssetPath("");

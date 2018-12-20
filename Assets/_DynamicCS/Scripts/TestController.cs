@@ -1,7 +1,4 @@
-﻿using UnityEditorInternal.VersionControl;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class TestController : MonoBehaviour
 {

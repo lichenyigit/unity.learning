@@ -24,7 +24,7 @@ public class WWWReloadController : MonoBehaviour
     List<Coroutine> coroutineList = new List<Coroutine>();
 
     //private string url = "https://arseeu.oss-cn-hangzhou.aliyuncs.com/model/AudiR8.assetbundle";
-    private string url = "http://cdn.lichenyi.cn/model/HumanSkull.assetbundle";
+    public string url = "http://cdn.lichenyi.cn/model/HumanSkull.assetbundle";
 
     private void addCoroutineList(Coroutine coroutine)
     {
@@ -191,9 +191,14 @@ public class WWWReloadController : MonoBehaviour
         //model.transform.parent = modelPanel.transform;
         //model.GetComponent<RectTransform>().pivot = new Vector2(0, 0);
         //addComponent<BoxCollider>(model);//添加collider
-        //addComponent<ModelRotation>(model);//模型转动
+        //addComponent<ModelRotation>(model);//模型转动//////////////////////
         //addComponent<CommentReplyController>(model);//添加留言UI
         // addComponent<CommentListController>(model);//显示留言列表
+
+        Collider collider = model.GetComponent<Collider>();
+        if (collider != null)
+            collider.isTrigger = true;
+
     }
 
     /// <summary>
