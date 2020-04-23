@@ -4,7 +4,8 @@
 [Bb]uild/
 [Bb]uilds/
 [Ll]ogs/
-Packages
+.vs
+Assets\Plugins\Editor
 .idea
 .iml
 *.iml
