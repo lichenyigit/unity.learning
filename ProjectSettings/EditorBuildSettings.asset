@@ -4,8 +4,5 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/_RotateModel/Scenes/RotateModel.unity
-    guid: cf6c67699ca17154f989100bc3a17a7b
+  m_Scenes: []
   m_configObjects: {}
