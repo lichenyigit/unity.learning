@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &101525897
 RectTransform:
   m_ObjectHideFlags: 0
@@ -790,7 +790,7 @@ MonoBehaviour:
   curHorizontalValue: 0.5
   sourceCamera: {fileID: 1115046219}
   listEnhanceItems:
-  - {fileID: 1799347342}
+  - {fileID: 1799347343}
   - {fileID: 421181029}
   - {fileID: 1812138677}
   - {fileID: 1198309956}
@@ -1612,7 +1612,6 @@ GameObject:
   - component: {fileID: 1799347341}
   - component: {fileID: 1799347340}
   - component: {fileID: 1799347339}
-  - component: {fileID: 1799347342}
   - component: {fileID: 1799347343}
   - component: {fileID: 1799347344}
   m_Layer: 5
@@ -1729,18 +1728,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1799347337}
   m_CullTransparentMesh: 0
---- !u!114 &1799347342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1799347337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2b3d673fda71234991b462fb4e6c68f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1799347343
 MonoBehaviour:
   m_ObjectHideFlags: 0
