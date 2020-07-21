@@ -5,7 +5,7 @@
 [Bb]uilds/
 [Ll]ogs/
 .vs
-Assets\Plugins\Editor
+Assets\Plugins
 .idea
 .iml
 *.iml
