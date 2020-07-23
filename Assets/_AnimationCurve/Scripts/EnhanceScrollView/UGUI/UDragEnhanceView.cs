@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
+﻿using UnityEngine.EventSystems;
 
 public class UDragEnhanceView : EventTrigger
 {
@@ -12,22 +9,22 @@ public class UDragEnhanceView : EventTrigger
     }
 
     
-    public void OnBeginDrag(PointerEventData eventData)
+    public override void OnBeginDrag(PointerEventData eventData)
     {
-        //base.OnBeginDrag(eventData);
+        base.OnBeginDrag(eventData);
     }
     
 
-    public void OnDrag(PointerEventData eventData)
+    public override void OnDrag(PointerEventData eventData)
     {
-        //base.OnDrag(eventData);
+        base.OnDrag(eventData);
         if (enhanceScrollView != null)
             enhanceScrollView.OnDragEnhanceViewMove(eventData.delta);
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public override void OnEndDrag(PointerEventData eventData)
     {
-        //base.OnEndDrag(eventData);
+        base.OnEndDrag(eventData);
         if (enhanceScrollView != null)
             enhanceScrollView.OnDragEnhanceViewEnd();
     }
