@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-public class LineController : MonoBehaviour
+public class DrawnLineController : MonoBehaviour
 {
     private GameObject startGO;
     private GameObject endGO;

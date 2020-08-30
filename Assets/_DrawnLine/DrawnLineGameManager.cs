@@ -15,9 +15,9 @@ public class DrawnLineGameManager : MonoBehaviour
     {
         GameObject gameObject0 = new GameObject();
         gameObject0.name = "Line1";
-        gameObject0.AddComponent<LineController>().Exe(gameObjects[0], gameObjects[1]);
+        gameObject0.AddComponent<DrawnLineController>().Exe(gameObjects[0], gameObjects[1]);
         GameObject gameObject1 = new GameObject();
         gameObject1.name = "Line2";
-        gameObject1.AddComponent<LineController>().Exe(gameObjects[2], gameObjects[3]);
+        gameObject1.AddComponent<DrawnLineController>().Exe(gameObjects[2], gameObjects[3]);
     }
 }
