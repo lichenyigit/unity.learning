@@ -51,6 +51,11 @@ public class TreeViewTest : MonoBehaviour
         data.Name = "1.1.1.第二篇";
         data.ParentID = 3;
         datas.Add(data);
+        
+        data = new TreeViewData();
+        data.Name = "1.1.1.第3篇";
+        data.ParentID = 3;
+        datas.Add(data);
 
         data = new TreeViewData();
         data.Name = "1.1.1.2.第一段";
